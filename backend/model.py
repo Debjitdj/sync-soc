@@ -12,22 +12,28 @@ class Model():
     def add_community(self, community_name, mailing_list):
         self.communities.insert_one({'name': community_name, 'mailing_list': mailing_list})
 
-
-    def add_event(self, community_id, date, start_slot, end_slot):
-        event = {'comm_id': community_id, 'date': str(date), 'start': start_slot, 'end': end_slot}
-        self.events.insert_one(event)
-        event_id = self.events.find_one({'comm_id': community_id, 'date': str(date), 'start': start_slot, 'end': end_slot})['_id']
+    def get_community_id(self, community_name):
         try:
-            target_day = self.days.find_one({'date': str(date)})
+            return self.communities.find_one({'name': community_name})['_id']
+        except KeyError():
+            print('NO COMMUNITY')
+
+
+    def add_event(self, community_id, day_date, start_slot, end_slot):
+        event = {'comm_id': community_id, 'date': str(day_date), 'start': start_slot, 'end': end_slot}
+        self.events.insert_one(event)
+        event_id = self.events.find_one({'comm_id': community_id, 'date': str(day_date), 'start': start_slot, 'end': end_slot})['_id']
+        try:
+            target_day = self.days.find_one({'date': str(day_date)})
             day_id = target_day['_id']
             slots = target_day['slots']
             for i in range(start_slot, end_slot):
                 slots[i] += [str(event_id)]
             self.days.find_one_and_update({"_id": day_id}, 
                                  {"$set": {"slots": slots}})
-        except:
+        except KeyError():  # this should not happen ever!
             print('fix week day!!!')
-            new_day = {'week_day': 'Monday', 'date': str(date), 'slots': [[] for i in range(48)]}
+            new_day = {'week_day': 'Monday', 'date': str(day_date), 'slots': [[] for i in range(48)]}
             for i in range(start_slot, end_slot):
                 new_day['slots'][i] += [event_id]
 
