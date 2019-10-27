@@ -7,6 +7,9 @@ class Community():
   def compare_community(self, other_community):
     # returns intersection of two societies.
 
+  def add_member(self, member_email):
+    pass
+
 class User():
   def __init__(self, email):
     self.email = email
