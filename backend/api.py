@@ -102,7 +102,7 @@ def get_calendar():
 
   recurring_events = list(model.recurring_events.find())
   for event in recurring_events:
-    week_day = event["weekDay"]
+    week_day = event["week_day"]
     start_slot = event["start_slot"]
     end_slot = event["end_slot"]
 
