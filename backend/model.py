@@ -8,9 +8,10 @@ class Model():
         self.communities = client['syncsoc']['communities']
         self.days = client['syncsoc']['days']
         self.events = client['syncsoc']['events']
+        self.recurring_events = client['syncsoc']['recurring_events']
 
     def add_community(self, community_name, mailing_list, owner_email='a@a', password='abc123'):
-        self.communities.insert_one({'name': community_name, 'mailing_list': mailing_list, 'password': password, 'owner_email': owner_email)
+        self.communities.insert_one({'name': community_name, 'mailing_list': mailing_list, 'password': password, 'owner_email': owner_email})
 
     def get_community_id(self, community_name):
         try:
@@ -23,6 +24,24 @@ class Model():
         event = {'comm_id': community_id, 'date': str(day_date), 'start': start_slot, 'end': end_slot}
         self.events.insert_one(event)
         event_id = self.events.find_one({'comm_id': community_id, 'date': str(day_date), 'start': start_slot, 'end': end_slot})['_id']
+        try:
+            target_day = self.days.find_one({'date': str(day_date)})
+            day_id = target_day['_id']
+            slots = target_day['slots']
+            for i in range(start_slot, end_slot):
+                slots[i] += [str(event_id)]
+            self.days.find_one_and_update({"_id": day_id}, 
+                                 {"$set": {"slots": slots}})
+        except KeyError():  # this should not happen ever!
+            print('fix week day!!!')
+            new_day = {'week_day': 'Monday', 'date': str(day_date), 'slots': [[] for i in range(48)]}
+            for i in range(start_slot, end_slot):
+                new_day['slots'][i] += [event_id]
+
+    def add_recurring_event(self, community_id, week_day, start_slot, end_slot):
+        event = {'comm_id': community_id, 'week_day': week_day, 'start': start_slot, 'end': end_slot}
+        self.recurring_events.insert_one(event)
+        event_id = self.recurring_events.find_one({'comm_id': community_id, 'date': str(day_date), 'start': start_slot, 'end': end_slot})['_id']
         try:
             target_day = self.days.find_one({'date': str(day_date)})
             day_id = target_day['_id']
