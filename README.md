@@ -1,6 +1,6 @@
 # Front-end
 
-
+go inside the front-end folder and follow that readme.md to start the react app. You might need to install some npm modules.
 
 # Back-end
 
