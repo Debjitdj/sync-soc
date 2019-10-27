@@ -33,8 +33,12 @@ def add_event():
     start_slot = 20
     end_slot = 25
 
+  weekly = request.args.get('weekly')
+  if weekly is None:
+    weekly = False
+
   community = model.communities.find_one({"name" : community_name})
-  model.add_event(community["_id"], date, start_slot, end_slot)
+  model.add_event(community["_id"], date, start_slot, end_slot, weekly)
   
   return jsonify(True)
 
@@ -67,7 +71,7 @@ def get_calendar():
   month = request.args.get('month')
   day = request.args.get('day')
   try:
-      start_date = datetime.date(year, month, day)
+    start_date = datetime.date(year, month, day)
   except:
     start_date = datetime.date(2019, 10, 1)
 
@@ -75,6 +79,8 @@ def get_calendar():
 
   model.assert_days_present(start_date, start_date + datetime.timedelta(days=7))
 
+
+  # non-recurring events
 
   calendar = [[[] for i in range(48)] for j in range(7)]
   for i in range(7):
@@ -91,6 +97,22 @@ def get_calendar():
         for mail in other_community["mailing_list"]:
           if mail in our_mails:
             cal_slot += [mail]
+
+  # recurring events
+
+  recurring_events = list(model.recurring_events.find())
+  for event in recurring_events:
+    week_day = event["week_day"]
+    start_slot = event["start_slot"]
+    end_slot = event["end_slot"]
+
+    comm_id = event["comm_id"]
+    other_community = model.communities.find_one({"_id":ObjectId(str(comm_id))})
+    for mail in other_community["mailing_list"]:
+      for i in range(start_slot, end_slot):
+        calendar[week_day][i] += [mail]
+
+  # computing actual results
 
   result = [[0 for i in range(48)] for j in range(7)]
 

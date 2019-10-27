@@ -7,8 +7,7 @@ event = {'comm_id': '5db583b03c712161122e94db', 'date': '28/10/2019', 'start': 3
 community = {'name': 'Sync Society', 'mailingList': []}
 
 
-recurring_event = {'weekDay': 'Monday'}
-
+recurring_event = {'weekDay': 1, 'comm_id': '...', 'start_slot': 5, 'end_slot': 7}
 
 
 '''

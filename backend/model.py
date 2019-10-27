@@ -9,8 +9,8 @@ class Model():
         self.days = client['syncsoc']['days']
         self.events = client['syncsoc']['events']
 
-    def add_community(self, community_name, mailing_list):
-        self.communities.insert_one({'name': community_name, 'mailing_list': mailing_list})
+    def add_community(self, community_name, mailing_list, owner_email='a@a', password='abc123'):
+        self.communities.insert_one({'name': community_name, 'mailing_list': mailing_list, 'password': password, 'owner_email': owner_email)
 
     def get_community_id(self, community_name):
         try:
