@@ -103,8 +103,8 @@ def get_calendar():
   recurring_events = list(model.recurring_events.find())
   for event in recurring_events:
     week_day = event["week_day"]
-    start_slot = event["start_slot"]
-    end_slot = event["end_slot"]
+    start_slot = event["start"]
+    end_slot = event["end"]
 
     comm_id = event["comm_id"]
     other_community = model.communities.find_one({"_id":ObjectId(str(comm_id))})
