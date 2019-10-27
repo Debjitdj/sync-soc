@@ -35,11 +35,12 @@ def add_event():
   community = model.communities.find_one({"name" : community_name})
   
   weekly = request.args.get('weekly')
-  if (weekly):
+  print(weekly)
+  if not weekly:
     model.add_event(community["_id"], date, start_slot, end_slot)
   else:
     model.add_recurring_event(community["_id"], date.weekday(), start_slot, end_slot)
-    
+    print('adding recurring event')
   return jsonify(True)
 
 @app.route('/add_community', methods = ['GET']) 
