@@ -112,7 +112,8 @@ def get_calendar():
     other_community = model.communities.find_one({"_id": ObjectId(str(comm_id))})
     for mail in other_community["mailing_list"]:
       for i in range(start_slot, end_slot):
-        calendar[week_day][i] += [mail]
+        if mail in our_mails:
+          calendar[week_day][i] += [mail]
 
   # computing actual results
 
