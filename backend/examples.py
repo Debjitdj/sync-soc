@@ -2,9 +2,11 @@ one_day = {'weekDay':'Monday', 'date':'01/11/2019', 'slots' : [[] for i in range
 
 event = {'socId':'0', 'date': '01/11/2019', 'start': 30, 'end': 35}
 
-society = {'mailingList': []}
+community = {'mailingList': []}
 
-recurring_event = {'weekDay':'Monday'}
+recurring_event = {'weekDay': 'Monday'}
+
+
 
 '''
 add_event(self, date, start_slot, end_slot):
