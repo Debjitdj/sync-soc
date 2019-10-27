@@ -4,7 +4,7 @@ class Community():
     self.id = idd
     self.events = []
 
-  def compare_community(self, Community other):
+  def compare_community(self, other_community):
     # returns intersection of two societies.
 
 class User():
