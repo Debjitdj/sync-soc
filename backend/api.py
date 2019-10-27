@@ -100,7 +100,19 @@ def get_calendar():
 
   # recurring events
 
+  recurring_events = list(model.recurring_events.find())
+  for event in recurring_events:
+    week_day = event["weekDay"]
+    start_slot = event["start_slot"]
+    end_slot = event["end_slot"]
 
+    comm_id = event["comm_id"]
+    other_community = model.communities.find_one({"_id":ObjectId(str(comm_id))})
+    for mail in other_community["mailing_list"]:
+      for i in range(start_slot, end_slot):
+        calendar[week_day][i] += [mail]
+
+  # computing actual results
 
   result = [[0 for i in range(48)] for j in range(7)]
 
