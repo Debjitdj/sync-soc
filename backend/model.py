@@ -9,8 +9,8 @@ class Model():
         self.days = client['syncsoc']['days']
         self.events = client['syncsoc']['events']
 
-    def add_community(self, community_name, mailingList):
-        self.communities.insert_one({'name': community_name, 'mailingList': mailingList})
+    def add_community(self, community_name, mailing_list):
+        self.communities.insert_one({'name': community_name, 'mailing_list': mailing_list})
 
 
     def add_event(self, community_id, date, start_slot, end_slot):
@@ -27,7 +27,7 @@ class Model():
                                  {"$set": {"slots": slots}})
         except:
             print('fix week day!!!')
-            new_day = {'weekDay': 'Monday', 'date': str(date), 'slots': [[] for i in range(48)]}
+            new_day = {'week_day': 'Monday', 'date': str(date), 'slots': [[] for i in range(48)]}
             for i in range(start_slot, end_slot):
                 new_day['slots'][i] += [event_id]
 
@@ -53,7 +53,7 @@ class Model():
                 self._add_day(day_date)
         
     def _add_day(self, day_date):
-        day = {'weekDay': day_date.weekday(), 'date': str(day_date), 'slots': [[] for i in range(48)]}
+        day = {'week_day': day_date.weekday(), 'date': str(day_date), 'slots': [[] for i in range(48)]}
         self.days.insert_one(day)
     
 def _daterange(start_date, end_date):

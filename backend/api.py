@@ -22,7 +22,7 @@ def add_event(community_name, date, start_slot, end_slot):
 
 @app.route('/', methods = ['GET'])
 def get_calendar(community, start_date):
-  our_mails = community["mailingList"]
+  our_mails = community["mailing_list"]
 
   calendar = [[[] for i in range(48)] for j in range(7)]
   for i in range(7):
@@ -35,7 +35,7 @@ def get_calendar(community, start_date):
         comm_id = event["comm_id"]
         other_community = model.events.find_one({"_id":ObjectId(comm_id)})
 
-        for mail in other_community["mailingList"]:
+        for mail in other_community["mailing_list"]:
           if our_mails.contains(mail):
             cal_slot += mail
 
