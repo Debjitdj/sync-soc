@@ -9,7 +9,6 @@ communities = list(model.communities.find())
 days = list(model.days.find())
 events = list(model.events.find())
 
-
 #front -> back
 
 @app.route('/add_event', methods = ['GET'])
