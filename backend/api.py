@@ -25,7 +25,6 @@ def add_event():
     print('using default date of (2019, 10, 2)')
     date = datetime.date(2019, 10, 2)
 
-    
   start_slot = request.args.get('start_slot')
   end_slot = request.args.get('end_slot')
   if community_name is None:  # test
@@ -33,13 +32,14 @@ def add_event():
     start_slot = 20
     end_slot = 25
 
-  weekly = request.args.get('weekly')
-  if weekly is None:
-    weekly = False
-
   community = model.communities.find_one({"name" : community_name})
-  model.add_event(community["_id"], date, start_slot, end_slot, weekly)
   
+  weekly = request.args.get('weekly')
+  if (weekly):
+    model.add_event(community["_id"], date, start_slot, end_slot)
+  else:
+    model.add_recurring_event(community["_id"], date.weekday(), start_slot, end_slot)
+    
   return jsonify(True)
 
 @app.route('/add_community', methods = ['GET']) 
@@ -59,7 +59,7 @@ def add_community():
   model.add_community(community_name, mails, password)
 
   return jsonify(True)
-
+  
 #back -> front
 
 @app.route('/get_calendar', methods = ['GET'])
@@ -103,8 +103,8 @@ def get_calendar():
   recurring_events = list(model.recurring_events.find())
   for event in recurring_events:
     week_day = event["week_day"]
-    start_slot = event["start_slot"]
-    end_slot = event["end_slot"]
+    start_slot = event["start"]
+    end_slot = event["end"]
 
     comm_id = event["comm_id"]
     other_community = model.communities.find_one({"_id":ObjectId(str(comm_id))})
