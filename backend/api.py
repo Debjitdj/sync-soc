@@ -4,7 +4,7 @@ from flask import request, jsonify
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-model = Model()
+model = model.Model()
 communities = list(model.communities.find())
 days = list(model.days.find())
 events = list(model.events.find())
@@ -12,16 +12,25 @@ events = list(model.events.find())
 
 #front -> back
 
-@app.route('/', methods = ['GET'])
-def add_event(community_name, date, start_slot, end_slot):
+@app.route('/add_event', methods = ['GET'])
+def add_event():
+  community_name = request.args.get('name')
+  date = request.args.get('date')
+  start_slot = request.args.get('start_slot')
+  end_slot = request.args.get('end_slot')
+
   model.assert_days_present(date, date)
   community = model.communities.find_one({"name" : community_name})
   model.add_event(community["_id"], date, start_slot, end_slot)  
 
 #back -> front
 
-@app.route('/', methods = ['GET'])
-def get_calendar(community, start_date):
+@app.route('/get_calendar', methods = ['GET'])
+def get_calendar():
+  community_name = request.args.get('name')
+  community = model.communities.find_one({"name" : community_name})
+  start_date = request.args.get('date')
+
   our_mails = community["mailing_list"]
 
   calendar = [[[] for i in range(48)] for j in range(7)]
@@ -37,7 +46,7 @@ def get_calendar(community, start_date):
 
         for mail in other_community["mailing_list"]:
           if our_mails.contains(mail):
-            cal_slot += mail
+            cal_slot += [mail]
 
   result = [[0 for i in range(48)] for j in range(7)]
 
