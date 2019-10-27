@@ -1,10 +1,14 @@
-one_day = {'weekDay':'Monday', 'date':'01/11/2019', 'slots' : [[] for i in range(48)]]}  # empty list for ids of events
+one_day = {'weekDay': 'Monday', 'date': '28/10/2019', 'slots': [[] for i in range(48)]}  # empty list for ids of events
 
-event = {'socId':'0', 'date': '01/11/2019', 'start': 30, 'end': 35}
 
-society = {'mailingList': []}
+event = {'comm_id': '5db583b03c712161122e94db', 'date': '28/10/2019', 'start': 30, 'end': 35}
 
-recurring_event = {'weekDay':'Monday'}
+
+community = {'name': 'Sync Society', 'mailingList': []}
+
+
+recurring_event = {'weekDay': 1, 'comm_id': '...', 'start_slot': 5, 'end_slot': 7}
+
 
 '''
 add_event(self, date, start_slot, end_slot):
