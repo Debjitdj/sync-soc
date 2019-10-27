@@ -1,0 +1,43 @@
+.header-container {
+    width: 100%;
+    height: 10%;
+    background: orange;
+    color: white;
+}
+
+.header-container > * {
+    vertical-align: middle;
+}
+
+i {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.prev-week-button, .next-week-button, .week-currently-viewing {
+    display: inline-block;
+    margin-left: 10%;
+}
+
+.week-currently-viewing {
+    height: 100%;
+    padding-top: 20px;
+}
+
+.add-event {
+    float: right;
+    margin-top: 17px;
+    margin-right: 20px;
+}

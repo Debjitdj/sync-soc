@@ -1,0 +1,27 @@
+.Calender-container {
+    height: 80%;
+    width: 95%;
+    margin: auto;
+    overflow: scroll;
+    box-shadow: 0 0 20px rgb(170, 170, 170);
+}
+
+.cell {
+    text-align: center;
+    width: 14%;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+td, th {
+    border: 1px solid #c5c5c5;
+    padding: 8px;
+}
+  
+tr:nth-child(even) {
+    background-color: #e6e6e6;
+}
