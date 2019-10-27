@@ -38,6 +38,24 @@ def add_event():
   
   return jsonify(True)
 
+@app.route('/add_community', methods = ['GET']) 
+def add_community():
+  community_name = request.args.get('name')
+  mails = request.args.get('mails').split(', ')
+  password = request.args.get('password')
+
+  # some default values
+  if community_name is None:
+    community_name = "A nameless society"
+  if mails is None:
+    mails = []
+  if password is None:
+    password = ""
+  
+  model.add_community(community_name, mails, password)
+
+  return jsonify(True)
+
 #back -> front
 
 @app.route('/get_calendar', methods = ['GET'])
